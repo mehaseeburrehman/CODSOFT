@@ -1,0 +1,92 @@
+#include <iostream>
+
+using namespace std;
+
+void printBoard(char gameBoard[3][3]) {
+	for (int row = 0; row < 3; ++row) {
+		for (int col = 0; col < 3; ++col) {
+			cout << gameBoard[row][col];
+			if (col < 2)
+				cout << " | ";
+		}
+		cout << endl;
+		if (row < 2)
+			cout << "---------" << endl;
+	}
+}
+
+bool checkWin(char gameBoard[3][3], char currentPlayerSymbol) {
+	for (int row = 0; row < 3; ++row) {
+		if (gameBoard[row][0] == currentPlayerSymbol && gameBoard[row][1] == currentPlayerSymbol && gameBoard[row][2] == currentPlayerSymbol)
+			return true;
+	}
+	for (int col = 0; col < 3; ++col) {
+		if (gameBoard[0][col] == currentPlayerSymbol && gameBoard[1][col] == currentPlayerSymbol && gameBoard[2][col] == currentPlayerSymbol)
+			return true;
+	}
+	if (gameBoard[0][0] == currentPlayerSymbol && gameBoard[1][1] == currentPlayerSymbol && gameBoard[2][2] == currentPlayerSymbol)
+		return true;
+	if (gameBoard[0][2] == currentPlayerSymbol && gameBoard[1][1] == currentPlayerSymbol && gameBoard[2][0] == currentPlayerSymbol)
+		return true;
+	return false;
+}
+
+bool checkDraw(char gameBoard[3][3]) {
+	for (int row = 0; row < 3; ++row) {
+		for (int col = 0; col < 3; ++col) {
+			if (gameBoard[row][col] == ' ')
+				return false;
+		}
+	}
+	return true;
+}
+
+int main() {
+program_start:
+	char gameBoard[3][3] = { { ' ', ' ', ' ' }, { ' ', ' ', ' ' }, { ' ', ' ', ' ' } };
+	char players[] = { 'X', 'O' };
+	int currentPlayerIndex = 0;
+
+	while (true) {
+		printBoard(gameBoard);
+		char currentPlayerSymbol = players[currentPlayerIndex];
+		cout << "Player " << currentPlayerSymbol << "'s turn" << endl;
+
+		int row, col;
+		cout << "Enter row (0, 1, or 2): ";
+		cin >> row;
+		cout << "Enter column (0, 1, or 2): ";
+		cin >> col;
+
+		if (row >= 0 && row < 3 && col >= 0 && col < 3 && gameBoard[row][col] == ' ') {
+			gameBoard[row][col] = currentPlayerSymbol;
+		}
+		else {
+			cout << "Invalid move. Try again." << endl;
+			continue;
+		}
+
+		if (checkWin(gameBoard, currentPlayerSymbol)) {
+			printBoard(gameBoard);
+			cout << "Player " << currentPlayerSymbol << " wins!" << endl;
+			break;
+		}
+		else if (checkDraw(gameBoard)) {
+			printBoard(gameBoard);
+			cout << "It's a draw!" << endl;
+			break;
+		}
+
+		currentPlayerIndex = 1 - currentPlayerIndex;
+	}
+
+	cout << "DO you want to play again enter Y otherwise any key?" << endl;
+	char yes;
+	cin >> yes;
+
+	if (yes == 'y' || yes == 'Y'); {
+	goto program_start;
+	}
+	cout << "Programm Exiting";
+	return 0;
+}
