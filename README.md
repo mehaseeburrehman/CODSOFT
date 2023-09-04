@@ -1,2 +1,0 @@
-# CODSOFT
- codsoft_task
